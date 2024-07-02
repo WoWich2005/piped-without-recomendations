@@ -9,7 +9,9 @@ const routes = [
     {
         path: "/trending",
         name: "Trending",
-        component: () => import("../components/TrendingPage.vue"),
+        redirect: {
+            name: "Playlists",
+        },
     },
     {
         path: "/preferences",
@@ -65,7 +67,9 @@ const routes = [
         path: "/feed",
         alias: ["/feed/subscriptions"],
         name: "Feed",
-        component: () => import("../components/FeedPage.vue"),
+        redirect: {
+            name: "Subscriptions",
+        },
     },
     {
         path: "/import",

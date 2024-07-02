@@ -5,7 +5,7 @@
                 v-for="(suggestion, i) in searchSuggestions"
                 :key="i"
                 @mouseover="onMouseOver(i)"
-                @click="setSelected(i)"
+                @mousedown="setSelected(i)"
             >
                 <router-link
                     class="suggestion"
@@ -52,15 +52,8 @@ export default {
         },
         async refreshSuggestions() {
             if (!this.searchText) {
-                if (this.getPreferenceBoolean("searchHistory", false))
+                if (this.getPreferenceBoolean("searchHistory", true))
                     this.searchSuggestions = JSON.parse(localStorage.getItem("search_history")) ?? [];
-            } else if (this.getPreferenceBoolean("searchSuggestions", true)) {
-                this.searchSuggestions =
-                    (
-                        await this.fetchJson(this.apiUrl() + "/opensearch/suggestions", {
-                            query: this.searchText,
-                        })
-                    )?.[1] ?? [];
             } else {
                 this.searchSuggestions = [];
                 return;

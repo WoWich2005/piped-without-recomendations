@@ -246,47 +246,17 @@
                     :video-id="getVideoId()"
                 />
             </div>
-
-            <div v-if="video" class="order-first sm:order-last">
-                <PlaylistVideos
-                    v-if="playlist"
-                    :playlist-id="playlistId"
-                    :playlist="playlist"
-                    :selected-index="index"
-                    :prefer-listen="isListening"
-                />
-                <a
-                    v-t="`actions.${showRecs ? 'minimize_recommendations' : 'show_recommendations'}`"
-                    class="btn mb-2"
-                    @click="showRecs = !showRecs"
-                />
-                <hr v-show="showRecs" />
-                <div v-show="showRecs">
-                    <ContentItem
-                        v-for="related in video.relatedStreams"
-                        :key="related.url"
-                        :item="related"
-                        :prefer-listen="isListening"
-                        class="mb-4"
-                        height="94"
-                        width="168"
-                    />
-                </div>
-                <hr class="sm:hidden" />
-            </div>
         </div>
     </LoadingIndicatorPage>
 </template>
 
 <script>
 import VideoPlayer from "./VideoPlayer.vue";
-import ContentItem from "./ContentItem.vue";
 import ErrorHandler from "./ErrorHandler.vue";
 import CommentItem from "./CommentItem.vue";
 import ChaptersBar from "./ChaptersBar.vue";
 import PlaylistAddModal from "./PlaylistAddModal.vue";
 import ShareModal from "./ShareModal.vue";
-import PlaylistVideos from "./PlaylistVideos.vue";
 import WatchOnButton from "./WatchOnButton.vue";
 import LoadingIndicatorPage from "./LoadingIndicatorPage.vue";
 import ToastComponent from "./ToastComponent.vue";
@@ -297,13 +267,11 @@ export default {
     name: "App",
     components: {
         VideoPlayer,
-        ContentItem,
         ErrorHandler,
         CommentItem,
         ChaptersBar,
         PlaylistAddModal,
         ShareModal,
-        PlaylistVideos,
         WatchOnButton,
         LoadingIndicatorPage,
         ToastComponent,

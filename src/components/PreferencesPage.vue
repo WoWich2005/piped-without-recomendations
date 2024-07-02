@@ -20,19 +20,6 @@
             <option v-for="language in languages" :key="language.code" :value="language.code" v-text="language.name" />
         </select>
     </label>
-    <label class="pref" for="ddlCountrySelection">
-        <strong v-t="'actions.country_selection'" />
-        <select id="ddlCountrySelection" v-model="countrySelected" class="select w-50" @change="onChange($event)">
-            <option v-for="country in countryMap" :key="country.code" :value="country.code" v-text="country.name" />
-        </select>
-    </label>
-    <label class="pref" for="ddlDefaultHomepage">
-        <strong v-t="'actions.default_homepage'" />
-        <select id="ddlDefaultHomepage" v-model="defaultHomepage" class="select w-auto" @change="onChange($event)">
-            <option v-t="'titles.trending'" value="trending" />
-            <option v-t="'titles.feed'" value="feed" />
-        </select>
-    </label>
 
     <h2 v-t="'titles.player'" class="text-center" />
     <label class="pref" for="chkAutoPlayVideo">
@@ -106,16 +93,6 @@
             @change="onChange($event)"
         />
     </label>
-    <label class="pref" for="chkMinimizeRecommendations">
-        <strong v-t="'actions.minimize_recommendations_default'" />
-        <input
-            id="chkMinimizeRecommendations"
-            v-model="minimizeRecommendations"
-            class="checkbox"
-            type="checkbox"
-            @change="onChange($event)"
-        />
-    </label>
     <label class="pref" for="chkMinimizeChapters">
         <strong v-t="'actions.minimize_chapters_default'" />
         <input
@@ -140,36 +117,6 @@
         <input
             id="chkShowWatchOnYouTube"
             v-model="showWatchOnYouTube"
-            class="checkbox"
-            type="checkbox"
-            @change="onChange($event)"
-        />
-    </label>
-    <label class="pref" for="chkShowSearchSuggestions">
-        <strong v-t="'actions.show_search_suggestions'" />
-        <input
-            id="chkShowSearchSuggestions"
-            v-model="searchSuggestions"
-            class="checkbox"
-            type="checkbox"
-            @change="onChange($event)"
-        />
-    </label>
-    <label class="pref" for="chkStoreSearchHistory">
-        <strong v-t="'actions.store_search_history'" />
-        <input
-            id="chkStoreSearchHistory"
-            v-model="searchHistory"
-            class="checkbox"
-            type="checkbox"
-            @change="onChange($event)"
-        />
-    </label>
-    <label class="pref" for="chkStoreWatchHistory">
-        <strong v-t="'actions.store_watch_history'" />
-        <input
-            id="chkStoreWatchHistory"
-            v-model="watchHistory"
             class="checkbox"
             type="checkbox"
             @change="onChange($event)"
@@ -349,36 +296,6 @@
         </div>
         <br />
     </div>
-    <h2 id="instancesList" v-t="'actions.instances_list'" />
-    <table class="table">
-        <thead>
-            <tr>
-                <th v-t="'preferences.instance_name'" />
-                <th v-t="'preferences.instance_locations'" />
-                <th v-t="'preferences.has_cdn'" />
-                <th v-t="'preferences.registered_users'" />
-                <th v-t="'preferences.version'" class="lt-md:hidden" />
-                <th v-t="'preferences.up_to_date'" />
-                <th v-t="'preferences.uptime_30d'" />
-                <th v-t="'preferences.ssl_score'" />
-            </tr>
-        </thead>
-        <tbody v-for="instance in publicInstances" :key="instance.name">
-            <tr>
-                <td v-text="instance.name" />
-                <td v-text="instance.locations" />
-                <td v-text="`${instance.cdn ? '&#9989;' : '&#10060;'}`" />
-                <td v-text="instance.registered" />
-                <td class="lt-md:hidden" v-text="instance.version" />
-                <td v-text="`${instance.up_to_date ? '&#9989;' : '&#10060;'}`" />
-                <td v-text="`${Number.parseFloat(instance.uptime_30d.toFixed(2))}%`" />
-                <td>
-                    <a v-t="'actions.view_ssl_score'" :href="sslScore(instance.api_url)" target="_blank" />
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <br />
     <p v-t="'info.preferences_note'" />
     <br />
     <button v-t="'actions.reset_preferences'" class="btn" @click="showConfirmResetPrefsDialog = true" />
@@ -448,11 +365,11 @@ export default {
             minimizeRecommendations: false,
             minimizeChapters: false,
             showWatchOnYouTube: false,
-            searchSuggestions: true,
+            searchSuggestions: false,
             watchHistory: false,
             searchHistory: false,
             hideWatched: false,
-            selectedLanguage: "en",
+            selectedLanguage: "ru",
             languages: [
                 { code: "ar", name: "Arabic" },
                 { code: "az", name: "Azərbaycan" },
@@ -566,7 +483,7 @@ export default {
             this.minimizeRecommendations = this.getPreferenceBoolean("minimizeRecommendations", false);
             this.minimizeChapters = this.getPreferenceBoolean("minimizeChapters", false);
             this.showWatchOnYouTube = this.getPreferenceBoolean("showWatchOnYouTube", false);
-            this.searchSuggestions = this.getPreferenceBoolean("searchSuggestions", true);
+            this.searchSuggestions = this.getPreferenceBoolean("searchSuggestions", false);
             this.watchHistory = this.getPreferenceBoolean("watchHistory", false);
             this.searchHistory = this.getPreferenceBoolean("searchHistory", false);
             this.selectedLanguage = this.getPreferenceString("hl", await this.defaultLanguage);

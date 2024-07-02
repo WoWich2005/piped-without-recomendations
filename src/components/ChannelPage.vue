@@ -10,7 +10,12 @@
         />
         <div class="flex flex-col items-center justify-between md:flex-row">
             <div class="flex place-items-center">
-                <img height="48" width="48" class="m-1 rounded-full" :src="channel.avatarUrl" />
+                <img
+                    height="48"
+                    width="48"
+                    class="m-1 rounded-full"
+                    :src="channel.avatarUrl ?? '/img/icons/logo.svg'"
+                />
                 <div class="flex items-center gap-1">
                     <h1 class="!text-xl" v-text="channel.name" />
                     <i v-if="channel.verified" class="i-fa6-solid:check !text-xl" />
@@ -140,6 +145,7 @@ export default {
             this.fetchChannel()
                 .then(data => (this.channel = data))
                 .then(() => {
+                    console.log(this.channel);
                     if (!this.channel.error) {
                         document.title = this.channel.name + " - Piped";
                         this.contentItems = this.channel.relatedStreams;

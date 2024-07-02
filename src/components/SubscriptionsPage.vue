@@ -10,64 +10,12 @@
             <!-- export to json -->
             <button v-t="'actions.export_to_json'" class="btn" @click="exportHandler" />
         </div>
-        <div class="m-1 flex flex-wrap gap-1">
-            <!-- import channel groups to json-->
-            <div>
-                <label
-                    for="fileSelector"
-                    class="btn"
-                    v-text="`${$t('actions.import_from_json')} (${$t('titles.channel_groups')})`"
-                />
-                <input
-                    id="fileSelector"
-                    ref="fileSelector"
-                    type="file"
-                    class="hidden"
-                    multiple="multiple"
-                    @change="importGroupsHandler"
-                />
-            </div>
-
-            <!-- export channel groups to json  -->
-            <button
-                class="btn"
-                @click="exportGroupsHandler"
-                v-text="`${$t('actions.export_to_json')} (${$t('titles.channel_groups')})`"
-            />
-        </div>
         <!-- subscriptions count, only shown if there are any  -->
         <div v-if="subscriptions.length > 0" class="flex self-center gap-1">
             <i18n-t keypath="subscriptions.subscribed_channels_count">{{ subscriptions.length }}</i18n-t>
         </div>
     </div>
     <br />
-    <hr />
-    <div class="w-full flex flex-wrap">
-        <button
-            v-for="group in channelGroups"
-            :key="group.groupName"
-            class="btn mx-1 w-max"
-            :class="{ selected: selectedGroup === group }"
-            @click="selectGroup(group)"
-        >
-            <span v-text="group.groupName !== '' ? group.groupName : $t('video.all')" />
-            <div v-if="group.groupName != '' && selectedGroup == group">
-                <i class="i-fa6-solid:pen mx-2" @click="showEditGroupModal = true" />
-                <i class="i-fa6-solid:circle-minus mx-2" @click="groupToDelete = group.groupName" />
-            </div>
-        </button>
-        <ConfirmModal
-            v-if="groupToDelete != null"
-            :message="$t('actions.delete_group_confirm')"
-            @close="groupToDelete = null"
-            @confirm="deleteGroup(groupToDelete)"
-        />
-        <button class="btn mx-1" @click="showCreateGroupModal = true">
-            <i class="i-fa6-solid:circle-plus" />
-        </button>
-    </div>
-    <br />
-    <hr />
     <!-- Subscriptions card list -->
     <div class="xl:grid xl:grid-cols-5 <md:flex-wrap">
         <!-- channel info card -->
@@ -77,7 +25,12 @@
             class="col m-2 border border-gray-500 rounded-lg p-1"
         >
             <router-link :to="subscription.url" class="text-4x4 flex p-2 font-bold">
-                <img :src="subscription.avatar" class="h-[fit-content] rounded-full" width="48" height="48" />
+                <img
+                    :src="subscription.avatar ?? '/img/icons/logo.svg'"
+                    class="h-[fit-content] rounded-full"
+                    width="48"
+                    height="48"
+                />
                 <span class="mx-2 self-center" v-text="subscription.name" />
             </router-link>
             <!-- subscribe / unsubscribe btn -->
@@ -101,11 +54,11 @@
             <input v-model="editedGroupName" type="text" class="input" />
             <button v-t="'actions.okay'" class="btn" :placeholder="$t('actions.group_name')" @click="editGroupName()" />
         </div>
-        <div class="mb-2 mt-3 h-[80vh] flex flex-col overflow-y-scroll pr-2">
+        <div class="mb-2 mt-3 min-w-[50vw] h-[80vh] flex flex-col overflow-y-scroll pr-2">
             <div v-for="subscription in subscriptions" :key="subscription.name">
                 <div class="mr-3 flex items-center justify-between">
                     <a :href="subscription.url" target="_blank" class="flex items-center overflow-hidden">
-                        <img :src="subscription.avatar" class="h-8 w-8 rounded-full" />
+                        <img :src="subscription.avatar ?? '/img/icons/logo.svg'" class="h-8 w-8 rounded-full" />
                         <span class="ml-2">{{ subscription.name }}</span>
                     </a>
                     <input
@@ -124,10 +77,9 @@
 <script>
 import ModalComponent from "./ModalComponent.vue";
 import CreateGroupModal from "./CreateGroupModal.vue";
-import ConfirmModal from "./ConfirmModal.vue";
 
 export default {
-    components: { ModalComponent, CreateGroupModal, ConfirmModal },
+    components: { ModalComponent, CreateGroupModal },
     data() {
         return {
             subscriptions: [],
